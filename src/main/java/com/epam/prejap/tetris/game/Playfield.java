@@ -3,6 +3,8 @@ package com.epam.prejap.tetris.game;
 import com.epam.prejap.tetris.block.Block;
 import com.epam.prejap.tetris.block.BlockFeed;
 
+import java.util.Arrays;
+
 public class Playfield {
 
     private final byte[][] grid;
@@ -42,19 +44,81 @@ public class Playfield {
         return moved;
     }
 
+    /**
+     * Method is used to check for complete lines in grid and remove it.
+     * Lines that are above it will be moved down one position.
+     */
+    public void checkCompleteLines() {
+        int numberOfLine = hasCompleteLine();
+        hide();
+        while (numberOfLine >= 0) {
+            removeLine(numberOfLine);
+            numberOfLine = hasCompleteLine();
+        }
+        show();
+    }
 
+    /**
+     * Allocates filled line in a grid.
+     * @return number of line that is filled or -1 if none was found.
+     */
+    private int hasCompleteLine() {
+        int line = 0;
+        for (byte[] bytes : grid) {
+            boolean lineIsFilled = true;
+            for (byte aByte : bytes) {
+                if (aByte == 0) {
+                    lineIsFilled = false;
+                    break;
+                }
+            }
+            if (lineIsFilled) return line;
+            line++;
+        }
+        return -1;
+    }
+
+    /**
+     * Removes line with given number.
+     * Lines that are above it will be moved down one position.
+     * @param numberOfLine the index of line, which should be removed.
+     */
+    private void removeLine(int numberOfLine) {
+        for (int i = numberOfLine; i > 0; i--) {
+            grid[i] = Arrays.copyOf(grid[i-1], cols);
+        }
+        Arrays.fill(grid[0], (byte)0);
+    }
+
+    /**
+     * Moves current block right on 1 column.
+     */
     private void moveRight() {
         move(0, 1);
     }
 
+    /**
+     * Moves current block left on 1 column.
+     */
     private void moveLeft() {
         move(0, -1);
     }
 
+    /**
+     * Moves current block down on 1 line.
+     * @return true if such move was maid.
+     */
     private boolean moveDown() {
         return move(1, 0);
     }
 
+    /**
+     * Making block move with specified offset of rows and columns.
+     * In case if such move not valid - leaves it without change and returns false.
+     * @param rowOffset row offset.
+     * @param colOffset column offset.
+     * @return true if move was maid.
+     */
     private boolean move(int rowOffset, int colOffset) {
         boolean moved = false;
         if (isValidMove(block, rowOffset, colOffset)) {
@@ -64,6 +128,13 @@ public class Playfield {
         return moved;
     }
 
+    /**
+     * Checks if move is valid.
+     * @param block block whose move on playfield is to be tested.
+     * @param rowOffset raw offset.
+     * @param colOffset column offset.
+     * @return true if move is valid.
+     */
     private boolean isValidMove(Block block, int rowOffset, int colOffset) {
         for (int i = 0; i < block.rows(); i++) {
             for (int j = 0; j < block.cols(); j++) {
@@ -80,15 +151,26 @@ public class Playfield {
         return true;
     }
 
+    /**
+     * Hides current block.
+     */
     private void hide() {
         forEachBrick((i, j, dot) -> grid[row + i][col + j] = 0);
     }
 
+    /**
+     * Shows block and draws grid.
+     */
     private void show() {
         forEachBrick((i, j, dot) -> grid[row + i][col + j] = dot);
         printer.draw(grid);
     }
 
+    /**
+     * Implements block's shift with specified offset of rows and columns.
+     * @param rowOffset row offset.
+     * @param colOffset column offset.
+     */
     private void doMove(int rowOffset, int colOffset) {
         row += rowOffset;
         col += colOffset;
