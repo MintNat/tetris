@@ -50,12 +50,11 @@ public class Playfield {
      */
     public void checkCompleteLines() {
         int numberOfLine = hasCompleteLine();
-        hide();
         while (numberOfLine >= 0) {
             removeLine(numberOfLine);
             numberOfLine = hasCompleteLine();
         }
-        show();
+        printer.draw(grid);
     }
 
     /**
