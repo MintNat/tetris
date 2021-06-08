@@ -2,9 +2,6 @@ package com.epam.prejap.tetris.game;
 
 import com.epam.prejap.tetris.block.Block;
 import com.epam.prejap.tetris.block.BlockFeed;
-import org.testng.Assert;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
 
 import java.util.Arrays;
 
@@ -61,6 +58,7 @@ public class Playfield {
 
     /**
      * Allocates filled line in a grid.
+     *
      * @return number of line that is filled or -1 if none was found.
      */
     private int hasCompleteLine() {
@@ -82,6 +80,7 @@ public class Playfield {
     /**
      * Removes line with given number.
      * Lines that are above it will be moved down one position.
+     *
      * @param numberOfLine the index of line, which should be removed.
      */
     private void removeLine(int numberOfLine) {
@@ -107,7 +106,8 @@ public class Playfield {
 
     /**
      * Moves current block down on 1 line.
-     * @return true if such move was maid.
+     *
+     * @return true if such move was made.
      */
     private boolean moveDown() {
         return move(1, 0);
@@ -116,9 +116,10 @@ public class Playfield {
     /**
      * Making block move with specified offset of rows and columns.
      * In case if such move not valid - leaves it without change and returns false.
+     *
      * @param rowOffset row offset.
      * @param colOffset column offset.
-     * @return true if move was maid.
+     * @return true if move was made.
      */
     private boolean move(int rowOffset, int colOffset) {
         boolean moved = false;
@@ -131,6 +132,7 @@ public class Playfield {
 
     /**
      * Checks if move is valid.
+     *
      * @param block block whose move on playfield is to be tested.
      * @param rowOffset raw offset.
      * @param colOffset column offset.
@@ -169,6 +171,7 @@ public class Playfield {
 
     /**
      * Implements block's shift with specified offset of rows and columns.
+     *
      * @param rowOffset row offset.
      * @param colOffset column offset.
      */
@@ -192,139 +195,4 @@ public class Playfield {
         void act(int i, int j, byte dot);
     }
 
-    @Test
-    public static class PlayfieldRemovingCompleteLinesTest {
-
-        @Test(dataProvider = "gridWithNoFilledLines")
-        public void noCompleteLinesToRemoveFromPlayfield(Playfield playfield, byte[][] expectedGrid) {
-            playfield.checkCompleteLines();
-            Assert.assertEquals(playfield.grid, expectedGrid, "No lines should be removed");
-        }
-
-        @DataProvider
-        public static Object[][] gridWithNoFilledLines() {
-            int rows = 10;
-            int cols = 20;
-            byte[] notCompleteLine = new byte[] {0,0,1,1,0,0,0,0,0,0,0,1,1,0,0,0,1,1,1,1};
-
-            Playfield playfield1 = new Playfield(rows, cols, new BlockFeed(), new Printer(System.out));
-            byte[][] expectedGrid1 = new byte[rows][cols];
-
-            Playfield playfield2 = new Playfield(rows, cols, new BlockFeed(), new Printer(System.out));
-            playfield2.grid[8] = Arrays.copyOf(notCompleteLine, cols);
-            playfield2.grid[9] = Arrays.copyOf(notCompleteLine, cols);
-            byte[][] expectedGrid2 = new byte[rows][cols];
-            expectedGrid2[8] = Arrays.copyOf(notCompleteLine, cols);
-            expectedGrid2[9] = Arrays.copyOf(notCompleteLine, cols);
-
-            Playfield playfield3 = new Playfield(rows, cols, new BlockFeed(), new Printer(System.out));
-            playfield3.grid[0] = Arrays.copyOf(notCompleteLine, cols);
-            playfield3.grid[1] = Arrays.copyOf(notCompleteLine, cols);
-            playfield3.grid[2] = Arrays.copyOf(notCompleteLine, cols);
-            playfield3.grid[3] = Arrays.copyOf(notCompleteLine, cols);
-            playfield3.grid[4] = Arrays.copyOf(notCompleteLine, cols);
-            playfield3.grid[5] = Arrays.copyOf(notCompleteLine, cols);
-            playfield3.grid[6] = Arrays.copyOf(notCompleteLine, cols);
-            playfield3.grid[7] = Arrays.copyOf(notCompleteLine, cols);
-            playfield3.grid[8] = Arrays.copyOf(notCompleteLine, cols);
-            playfield3.grid[9] = Arrays.copyOf(notCompleteLine, cols);
-            byte[][] expectedGrid3 = new byte[rows][cols];
-            expectedGrid3[0] = Arrays.copyOf(notCompleteLine, cols);
-            expectedGrid3[1] = Arrays.copyOf(notCompleteLine, cols);
-            expectedGrid3[2] = Arrays.copyOf(notCompleteLine, cols);
-            expectedGrid3[3] = Arrays.copyOf(notCompleteLine, cols);
-            expectedGrid3[4] = Arrays.copyOf(notCompleteLine, cols);
-            expectedGrid3[5] = Arrays.copyOf(notCompleteLine, cols);
-            expectedGrid3[6] = Arrays.copyOf(notCompleteLine, cols);
-            expectedGrid3[7] = Arrays.copyOf(notCompleteLine, cols);
-            expectedGrid3[8] = Arrays.copyOf(notCompleteLine, cols);
-            expectedGrid3[9] = Arrays.copyOf(notCompleteLine, cols);
-
-            return new Object[][] {
-                    {playfield1, expectedGrid1},
-                    {playfield2, expectedGrid2},
-                    {playfield3, expectedGrid3}
-            };
-        }
-
-        @Test(dataProvider = "gridWithFilledLines")
-        public void removesCompleteLinesFromPlayfield(Playfield playfield, byte[][] expectedGrid, String msg) {
-            playfield.checkCompleteLines();
-            Assert.assertEquals(playfield.grid, expectedGrid, msg);
-        }
-
-        @DataProvider
-        public static Object[][] gridWithFilledLines() {
-            int rows = 10;
-            int cols = 20;
-            byte[] notCompleteLine = new byte[] {1,1,1,1,0,0,1,1,0,0,0,1,1,0,0,0,0,1,1,1};
-            byte[] completeLine = new byte[cols];
-            Arrays.fill(completeLine, (byte) 1);
-
-            Playfield playfield1 = new Playfield(rows, cols, new BlockFeed(), new Printer(System.out));
-            playfield1.grid[7] = Arrays.copyOf(notCompleteLine, cols);
-            playfield1.grid[8] = Arrays.copyOf(notCompleteLine, cols);
-            playfield1.grid[9] = Arrays.copyOf(completeLine, cols);
-
-            byte[][] expectedGrid1 = new byte[rows][cols];
-            expectedGrid1[8] = Arrays.copyOf(playfield1.grid[7], cols);
-            expectedGrid1[9] = Arrays.copyOf(playfield1.grid[8], cols);
-
-            Playfield playfield2 = new Playfield(rows, cols, new BlockFeed(), new Printer(System.out));
-            playfield2.grid[5] = Arrays.copyOf(notCompleteLine, cols);
-            playfield2.grid[6] = Arrays.copyOf(completeLine, cols);
-            playfield2.grid[7] = Arrays.copyOf(notCompleteLine, cols);
-            playfield2.grid[8] = Arrays.copyOf(notCompleteLine, cols);
-            playfield2.grid[9] = Arrays.copyOf(completeLine, cols);
-
-            byte[][] expectedGrid2 = new byte[rows][cols];
-            expectedGrid2[7] = Arrays.copyOf(playfield2.grid[5], cols);
-            expectedGrid2[8] = Arrays.copyOf(playfield2.grid[7], cols);
-            expectedGrid2[9] = Arrays.copyOf(playfield2.grid[8], cols);
-
-            Playfield playfield3 = new Playfield(rows, cols, new BlockFeed(), new Printer(System.out));
-            playfield3.grid[3] = Arrays.copyOf(notCompleteLine, cols);
-            playfield3.grid[4] = Arrays.copyOf(notCompleteLine, cols);
-            playfield3.grid[5] = Arrays.copyOf(completeLine, cols);
-            playfield3.grid[6] = Arrays.copyOf(notCompleteLine, cols);
-            playfield3.grid[7] = Arrays.copyOf(completeLine, cols);
-            playfield3.grid[8] = Arrays.copyOf(notCompleteLine, cols);
-            playfield3.grid[9] = Arrays.copyOf(completeLine, cols);
-
-            byte[][] expectedGrid3 = new byte[rows][cols];
-            expectedGrid3[6] = Arrays.copyOf(playfield3.grid[3], cols);
-            expectedGrid3[7] = Arrays.copyOf(playfield3.grid[4], cols);
-            expectedGrid3[8] = Arrays.copyOf(playfield3.grid[6], cols);
-            expectedGrid3[9] = Arrays.copyOf(playfield3.grid[8], cols);
-
-            Playfield playfield4 = new Playfield(rows, cols, new BlockFeed(), new Printer(System.out));
-            playfield4.grid[9] = Arrays.copyOf(completeLine, cols);
-
-            byte[][] expectedGrid4 = new byte[rows][cols];
-
-            Playfield playfield5 = new Playfield(rows, cols, new BlockFeed(), new Printer(System.out));
-            playfield5.grid[0] = Arrays.copyOf(completeLine, cols);
-
-            byte[][] expectedGrid5 = new byte[rows][cols];
-
-            Playfield playfield6 = new Playfield(rows, cols, new BlockFeed(), new Printer(System.out));
-            playfield6.grid[6] = Arrays.copyOf(notCompleteLine, cols);
-            playfield6.grid[7] = Arrays.copyOf(notCompleteLine, cols);
-            playfield6.grid[8] = Arrays.copyOf(completeLine, cols);
-            playfield6.grid[9] = Arrays.copyOf(completeLine, cols);
-
-            byte[][] expectedGrid6 = new byte[rows][cols];
-            expectedGrid6[8] = Arrays.copyOf(playfield6.grid[6], cols);
-            expectedGrid6[9] = Arrays.copyOf(playfield6.grid[7], cols);
-
-            return new Object[][] {
-                    {playfield1, expectedGrid1, "Expected one filled line (row number: 9) to be removed, lines from above moved down"},
-                    {playfield2, expectedGrid2, "Expected two filled lines (row number: 6, 9) to be removed, row 5 moved to 7, rows 7 -> 8, 8 -> 9"},
-                    {playfield3, expectedGrid3, "Expected three filled lines (row number: 5, 7, 9) to be removed and rows 3 moved to 6, 4 -> 7, row 6 -> 8, row 8 -> 9 "},
-                    {playfield4, expectedGrid4, "Expected one filled line (row number: 9) to be removed"},
-                    {playfield5, expectedGrid5, "Expected one filled line (row number: 0) to be removed"},
-                    {playfield6, expectedGrid6, "Expected two filled lines (row number: 8,9) to be removed, row 6 moved to 8, rows 7 -> 9"}
-            };
-        }
-    }
 }
