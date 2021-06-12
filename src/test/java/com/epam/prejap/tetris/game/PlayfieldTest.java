@@ -2,9 +2,6 @@ package com.epam.prejap.tetris.game;
 
 import com.epam.prejap.tetris.block.BlockFeed;
 import org.testng.Assert;
-import org.testng.ITestNGMethod;
-import org.testng.ITestResult;
-import org.testng.TestListenerAdapter;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
@@ -15,6 +12,7 @@ import java.util.stream.IntStream;
 
 /**
  * Tests for feature that removes filled lines
+ * In case if field "grid" is not present in Playfield class, FailListener will mark skipped tests as failed
  *
  * @author Miatowicz Natalia
  */
@@ -160,4 +158,3 @@ public class PlayfieldTest {
         };
     }
 }
-
