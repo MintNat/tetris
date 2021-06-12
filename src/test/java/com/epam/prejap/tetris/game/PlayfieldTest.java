@@ -2,40 +2,39 @@ package com.epam.prejap.tetris.game;
 
 import com.epam.prejap.tetris.block.BlockFeed;
 import org.testng.Assert;
+import org.testng.ITestNGMethod;
+import org.testng.ITestResult;
+import org.testng.TestListenerAdapter;
 import org.testng.annotations.DataProvider;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
+import java.util.stream.IntStream;
 
 /**
  * Tests for feature that removes filled lines
  *
  * @author Miatowicz Natalia
  */
+@Listeners(FailListener.class)
 public class PlayfieldTest {
-    static Field grid;
-
-    static {
-        try {
-            grid = Playfield.class.getDeclaredField("grid");
-            grid.setAccessible(true);
-        } catch (ReflectiveOperationException e) {
-            Assert.fail("There is no field \"grid\" in Playfield class");
-        }
-    }
-
-    @Test(dataProvider = "gridWithNoFilledLines")
+    @Test(groups = {"functions tests", "Playfield class tests"}, dataProvider = "GridWithNotFullyFilledLines")
     public void noCompleteLinesToRemoveFromPlayfield(Playfield playfield, byte[][] expectedGrid) throws ReflectiveOperationException {
+        Field grid = Playfield.class.getDeclaredField("grid");
+        grid.setAccessible(true);
         playfield.checkCompleteLines();
         Assert.assertEquals(grid.get(playfield), expectedGrid, "No lines should be removed");
     }
 
     @DataProvider
-    public static Object[][] gridWithNoFilledLines() throws ReflectiveOperationException {
+    public static Object[][] GridWithNotFullyFilledLines() throws ReflectiveOperationException {
+        Field grid = Playfield.class.getDeclaredField("grid");
+        grid.setAccessible(true);
         int rows = 10;
         int cols = 20;
-        byte[] notCompleteLine = new byte[] {0,0,1,1,0,0,0,0,0,0,0,1,1,0,0,0,1,1,1,1};
+        byte[] notCompleteLine = new byte[]{0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1};
 
         Playfield playfield1 = new Playfield(rows, cols, new BlockFeed(), new Printer(System.out));
         byte[][] expectedGrid1 = new byte[rows][cols];
@@ -52,47 +51,34 @@ public class PlayfieldTest {
 
         Playfield playfield3 = new Playfield(rows, cols, new BlockFeed(), new Printer(System.out));
         byte[][] grid3 = new byte[rows][cols];
-        grid3[0] = Arrays.copyOf(notCompleteLine, cols);
-        grid3[1] = Arrays.copyOf(notCompleteLine, cols);
-        grid3[2] = Arrays.copyOf(notCompleteLine, cols);
-        grid3[3] = Arrays.copyOf(notCompleteLine, cols);
-        grid3[4] = Arrays.copyOf(notCompleteLine, cols);
-        grid3[5] = Arrays.copyOf(notCompleteLine, cols);
-        grid3[6] = Arrays.copyOf(notCompleteLine, cols);
-        grid3[7] = Arrays.copyOf(notCompleteLine, cols);
-        grid3[8] = Arrays.copyOf(notCompleteLine, cols);
-        grid3[9] = Arrays.copyOf(notCompleteLine, cols);
+        IntStream.rangeClosed(0, 9).forEach(i -> grid3[i] = Arrays.copyOf(notCompleteLine, cols));
         grid.set(playfield3, grid3);
 
         byte[][] expectedGrid3 = new byte[rows][cols];
-        expectedGrid3[0] = Arrays.copyOf(notCompleteLine, cols);
-        expectedGrid3[1] = Arrays.copyOf(notCompleteLine, cols);
-        expectedGrid3[2] = Arrays.copyOf(notCompleteLine, cols);
-        expectedGrid3[3] = Arrays.copyOf(notCompleteLine, cols);
-        expectedGrid3[4] = Arrays.copyOf(notCompleteLine, cols);
-        expectedGrid3[5] = Arrays.copyOf(notCompleteLine, cols);
-        expectedGrid3[6] = Arrays.copyOf(notCompleteLine, cols);
-        expectedGrid3[7] = Arrays.copyOf(notCompleteLine, cols);
-        expectedGrid3[8] = Arrays.copyOf(notCompleteLine, cols);
-        expectedGrid3[9] = Arrays.copyOf(notCompleteLine, cols);
+        IntStream.rangeClosed(0, 9).forEach(i -> expectedGrid3[i] = Arrays.copyOf(notCompleteLine, cols));
 
-        return new Object[][] {
+        return new Object[][]{
                 {playfield1, expectedGrid1},
                 {playfield2, expectedGrid2},
                 {playfield3, expectedGrid3}
         };
     }
-    @Test(dataProvider = "gridWithFilledLines")
-    public void removesCompleteLinesFromPlayfield(Playfield playfield, byte[][] expectedGrid, String msg) throws ReflectiveOperationException {
+
+    @Test(groups = {"functions tests", "Playfield class tests"}, dataProvider = "gridWithFilledLines")
+    public void removeCompleteLinesFromPlayfield(Playfield playfield, byte[][] expectedGrid, String msg) throws ReflectiveOperationException {
+        Field grid = Playfield.class.getDeclaredField("grid");
+        grid.setAccessible(true);
         playfield.checkCompleteLines();
         Assert.assertEquals(grid.get(playfield), expectedGrid, msg);
     }
 
     @DataProvider
     public static Object[][] gridWithFilledLines() throws ReflectiveOperationException {
+        Field grid = Playfield.class.getDeclaredField("grid");
+        grid.setAccessible(true);
         int rows = 10;
         int cols = 20;
-        byte[] notCompleteLine = new byte[] {1,1,1,1,0,0,1,1,0,0,0,1,1,0,0,0,0,1,1,1};
+        byte[] notCompleteLine = new byte[]{1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 1};
         byte[] completeLine = new byte[cols];
         Arrays.fill(completeLine, (byte) 1);
 
@@ -164,7 +150,7 @@ public class PlayfieldTest {
         expectedGrid6[8] = Arrays.copyOf(grid6[6], cols);
         expectedGrid6[9] = Arrays.copyOf(grid6[7], cols);
 
-        return new Object[][] {
+        return new Object[][]{
                 {playfield1, expectedGrid1, "Expected one filled line (row number: 9) to be removed, lines from above moved down"},
                 {playfield2, expectedGrid2, "Expected two filled lines (row number: 6, 9) to be removed, row 5 moved to 7, rows 7 -> 8, 8 -> 9"},
                 {playfield3, expectedGrid3, "Expected three filled lines (row number: 5, 7, 9) to be removed and rows 3 moved to 6, 4 -> 7, row 6 -> 8, row 8 -> 9 "},
@@ -174,3 +160,4 @@ public class PlayfieldTest {
         };
     }
 }
+
