@@ -59,7 +59,7 @@ public class Playfield {
     /**
      * Allocates filled line in a grid.
      *
-     * @return number of line that is filled or -1 if none was found.
+     * @return number of line that is filled or -1 if none was found
      */
     private int hasCompleteLine() {
         int line = 0;
@@ -81,7 +81,7 @@ public class Playfield {
      * Removes line with given number.
      * Lines that are above it will be moved down one position.
      *
-     * @param numberOfLine the index of line, which should be removed.
+     * @param numberOfLine the index of line, which should be removed
      */
     private void removeLine(int numberOfLine) {
         for (int i = numberOfLine; i > 0; i--) {
@@ -91,35 +91,35 @@ public class Playfield {
     }
 
     /**
-     * Moves current block right on 1 column.
+     * Moves current block right by 1 column.
      */
     private void moveRight() {
         move(0, 1);
     }
 
     /**
-     * Moves current block left on 1 column.
+     * Moves current block left by 1 column.
      */
     private void moveLeft() {
         move(0, -1);
     }
 
     /**
-     * Moves current block down on 1 line.
+     * Moves current block down by 1 line.
      *
-     * @return true if such move was made.
+     * @return true if such move was made
      */
     private boolean moveDown() {
         return move(1, 0);
     }
 
     /**
-     * Making block move with specified offset of rows and columns.
-     * In case if such move not valid - leaves it without change and returns false.
+     * Moves block with specified offset of rows and columns.
+     * In case such move is not valid - leaves it without change and returns false.
      *
-     * @param rowOffset row offset.
-     * @param colOffset column offset.
-     * @return true if move was made.
+     * @param rowOffset row offset
+     * @param colOffset column offset
+     * @return true if move was made
      */
     private boolean move(int rowOffset, int colOffset) {
         boolean moved = false;
@@ -133,10 +133,10 @@ public class Playfield {
     /**
      * Checks if move is valid.
      *
-     * @param block block whose move on playfield is to be tested.
-     * @param rowOffset raw offset.
-     * @param colOffset column offset.
-     * @return true if move is valid.
+     * @param block the block whose move on playfield is to be tested
+     * @param rowOffset row offset
+     * @param colOffset column offset
+     * @return true if move is valid
      */
     private boolean isValidMove(Block block, int rowOffset, int colOffset) {
         for (int i = 0; i < block.rows(); i++) {
@@ -172,8 +172,8 @@ public class Playfield {
     /**
      * Implements block's shift with specified offset of rows and columns.
      *
-     * @param rowOffset row offset.
-     * @param colOffset column offset.
+     * @param rowOffset row offset
+     * @param colOffset column offset
      */
     private void doMove(int rowOffset, int colOffset) {
         row += rowOffset;
