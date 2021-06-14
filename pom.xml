@@ -6,19 +6,21 @@
 
     <groupId>com.epam.prejap</groupId>
     <artifactId>tetris</artifactId>
-    <version>0.1</version>
+    <version>0.2</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>16</maven.compiler.source>
         <maven.compiler.target>16</maven.compiler.target>
+        <maven.jar.plugin.version>3.2.0</maven.jar.plugin.version>
+        <testing>7.4.0</testing>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
-            <version>7.4.0</version>
+            <version>${testing}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -28,7 +30,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>3.2.0</version>
+                <version>${maven.jar.plugin.version}</version>
                 <configuration>
                     <archive>
                         <manifest>
