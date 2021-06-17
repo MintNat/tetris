@@ -6,21 +6,26 @@
 
     <groupId>com.epam.prejap</groupId>
     <artifactId>tetris</artifactId>
-    <version>0.2</version>
+    <version>0.4</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>16</maven.compiler.source>
         <maven.compiler.target>16</maven.compiler.target>
+        <main.class>com.epam.prejap.tetris.Tetris</main.class>
+        <test.jar.file.location>
+            ${project.build.directory}${file.separator}${project.build.finalName}.jar
+        </test.jar.file.location>
+        <testng.version>7.4.0</testng.version>
         <maven.jar.plugin.version>3.2.0</maven.jar.plugin.version>
-        <testing>7.4.0</testing>
+        <properties.maven.plugin.version>1.0.0</properties.maven.plugin.version>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
-            <version>${testing}</version>
+            <version>${testng.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -35,12 +40,56 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>com.epam.prejap.git.tetris.Tetris</mainClass>
+                            <mainClass>${main.class}</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
             </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.0.0-M5</version>
+                <configuration>
+                    <excludedGroups>jar</excludedGroups>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>3.0.0-M5</version>
+                <executions>
+                    <execution>
+                        <id>jar-archive-testing</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>integration-test</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!--See src/test/java/com/epam/prejap/tetris/JARArchiveIT for why we need this-->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>properties-maven-plugin</artifactId>
+                <version>${properties.maven.plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>create-properties-file</id>
+                        <phase>generate-test-resources</phase>
+                        <goals>
+                            <goal>write-project-properties</goal>
+                        </goals>
+                        <configuration>
+                            <outputFile>
+                                ${project.build.testOutputDirectory}${file.separator}properties-from-pom.properties
+                            </outputFile>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
-
 </project>
