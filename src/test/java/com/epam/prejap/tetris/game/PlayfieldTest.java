@@ -18,7 +18,7 @@ import java.util.stream.IntStream;
  */
 @Listeners(FailListener.class)
 public class PlayfieldTest {
-    @Test(groups = {"functions tests", "Playfield class tests"}, dataProvider = "GridWithNotFullyFilledLines")
+    @Test(groups = {"functionsTests", "playfieldClassTests"}, dataProvider = "GridWithNotFullyFilledLines")
     public void noCompleteLinesToRemoveFromPlayfield(Playfield playfield, byte[][] expectedGrid) throws ReflectiveOperationException {
         Field grid = Playfield.class.getDeclaredField("grid");
         grid.setAccessible(true);
@@ -62,7 +62,7 @@ public class PlayfieldTest {
         };
     }
 
-    @Test(groups = {"functions tests", "Playfield class tests"}, dataProvider = "gridWithFilledLines")
+    @Test(groups = {"functionsTests", "playfieldClassTests"}, dataProvider = "gridWithFilledLines")
     public void removeCompleteLinesFromPlayfield(Playfield playfield, byte[][] expectedGrid, String msg) throws ReflectiveOperationException {
         Field grid = Playfield.class.getDeclaredField("grid");
         grid.setAccessible(true);

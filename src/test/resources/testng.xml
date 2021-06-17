@@ -8,10 +8,14 @@
                 <include name="blockShapes"/>
                 <include name="blocks"/>
                 <include name="jar"/>
+                <include name="functionsTests"/>
+                <include name="playfieldClassTests"/>
             </define>
             <run>
                 <include name="blockShapes"/>
                 <include name="blocks"/>
+                <include name="functionsTests"/>
+                <include name="playfieldClassTests"/>
                 <include name="jar"/>
             </run>
         </groups>
@@ -19,6 +23,7 @@
             <class name="com.epam.prejap.tetris.block.OBlockTest"/>
             <class name="com.epam.prejap.tetris.block.TBlockTest"/>
             <class name="com.epam.prejap.tetris.JARArchiveIT"/>
+            <class name="com.epam.prejap.tetris.game.PlayfieldTest"/>
         </classes>
     </test>
 </suite>
