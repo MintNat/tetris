@@ -35,7 +35,7 @@ class Tetris {
                 Move move = player.nextMove().orElse(Move.NONE);
                 moved |= (nextMove = playfield.move(move));
             } while (nextMove);
-            playfield.checkCompleteLines();
+            playfield.findAndRemoveFilledLines();
         } while (moved);
 
         return new Score(score);

@@ -45,10 +45,10 @@ public class Playfield {
     }
 
     /**
-     * Method is used to check for complete lines in grid and remove it.
-     * Lines that are above it will be moved down one position.
+     * Checks for complete lines in a grid and removes them when found.
+     * Lines that are above it will be moved down on such number of rows however many lines were found.
      */
-    public void checkCompleteLines() {
+    public void findAndRemoveFilledLines() {
         int numberOfFilledLine = hasCompleteLine();
         while (numberOfFilledLine >= 0) {
             removeLine(numberOfFilledLine);
@@ -78,7 +78,7 @@ public class Playfield {
     }
 
     /**
-     * Removes line with given number.
+     * Removes a line with a given number.
      * Lines that are above it will be moved down one position.
      *
      * @param numberOfLine the index of line, which should be removed
@@ -91,21 +91,21 @@ public class Playfield {
     }
 
     /**
-     * Moves current block right by 1 column.
+     * Moves a current block right by 1 column.
      */
     private void moveRight() {
         move(0, 1);
     }
 
     /**
-     * Moves current block left by 1 column.
+     * Moves a current block left by 1 column.
      */
     private void moveLeft() {
         move(0, -1);
     }
 
     /**
-     * Moves current block down by 1 line.
+     * Moves a current block down by 1 line.
      *
      * @return true if such move was made
      */
@@ -155,7 +155,7 @@ public class Playfield {
     }
 
     /**
-     * Hides current block.
+     * Hides a current block.
      */
     private void hide() {
         forEachBrick((i, j, dot) -> grid[row + i][col + j] = 0);

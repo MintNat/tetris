@@ -18,16 +18,16 @@ import java.util.stream.IntStream;
  */
 @Listeners(FailListener.class)
 public class PlayfieldTest {
-    @Test(groups = {"functionsTests", "playfieldClassTests"}, dataProvider = "GridWithNotFullyFilledLines")
+    @Test(groups = {"functionsTests", "playfieldClassTests"}, dataProvider = "gridWithNotFullyFilledLines")
     public void noCompleteLinesToRemoveFromPlayfield(Playfield playfield, byte[][] expectedGrid) throws ReflectiveOperationException {
         Field grid = Playfield.class.getDeclaredField("grid");
         grid.setAccessible(true);
-        playfield.checkCompleteLines();
+        playfield.findAndRemoveFilledLines();
         Assert.assertEquals(grid.get(playfield), expectedGrid, "No lines should be removed");
     }
 
     @DataProvider
-    public static Object[][] GridWithNotFullyFilledLines() throws ReflectiveOperationException {
+    public static Object[][] gridWithNotFullyFilledLines() throws ReflectiveOperationException {
         Field grid = Playfield.class.getDeclaredField("grid");
         grid.setAccessible(true);
         int rows = 10;
@@ -66,7 +66,7 @@ public class PlayfieldTest {
     public void removeCompleteLinesFromPlayfield(Playfield playfield, byte[][] expectedGrid, String msg) throws ReflectiveOperationException {
         Field grid = Playfield.class.getDeclaredField("grid");
         grid.setAccessible(true);
-        playfield.checkCompleteLines();
+        playfield.findAndRemoveFilledLines();
         Assert.assertEquals(grid.get(playfield), expectedGrid, msg);
     }
 
