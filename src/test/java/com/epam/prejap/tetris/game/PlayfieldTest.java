@@ -12,13 +12,13 @@ import java.util.stream.IntStream;
 
 /**
  * Tests for feature that removes filled lines
- * In case if field "grid" is not present in Playfield class, FailListener will mark skipped tests as failed
+ * In case if the field "grid" is not present in Playfield class, FailListener will mark skipped tests as failed
  *
  * @author Miatowicz Natalia
  */
 @Listeners(FailListener.class)
 public class PlayfieldTest {
-    @Test(groups = {"functionsTests", "playfieldClassTests"}, dataProvider = "gridWithNotFullyFilledLines")
+    @Test(groups = {"Functions tests", "playfieldClassTests"}, dataProvider = "gridWithNotFullyFilledLines")
     public void noCompleteLinesToRemoveFromPlayfield(Playfield playfield, byte[][] expectedGrid) throws ReflectiveOperationException {
         Field grid = Playfield.class.getDeclaredField("grid");
         grid.setAccessible(true);
@@ -62,7 +62,7 @@ public class PlayfieldTest {
         };
     }
 
-    @Test(groups = {"functionsTests", "playfieldClassTests"}, dataProvider = "gridWithFilledLines")
+    @Test(groups = {"Functions tests", "playfieldClassTests"}, dataProvider = "gridWithFilledLines")
     public void removeCompleteLinesFromPlayfield(Playfield playfield, byte[][] expectedGrid, String msg) throws ReflectiveOperationException {
         Field grid = Playfield.class.getDeclaredField("grid");
         grid.setAccessible(true);
