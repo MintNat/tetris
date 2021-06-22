@@ -2,9 +2,9 @@ package com.epam.prejap.tetris.block;
 
 public abstract class Block {
 
-    final byte[][] image;
-    final int rows;
-    final int cols;
+    private final byte[][] image;
+    private final int rows;
+    private final int cols;
 
     Block(byte[][] dots) {
         rows = dots.length;

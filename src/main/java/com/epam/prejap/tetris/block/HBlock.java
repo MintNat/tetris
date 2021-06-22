@@ -1,28 +1,28 @@
 package com.epam.prejap.tetris.block;
 
 /**
- * Represents Y block in BlockFeed.
- *
- * @author Anna Silenko
+ * Implements H shaped block
+ * @see com.epam.prejap.tetris.game.Printer#print(byte) 
+ * @author Slawomir Kucab
  */
-final class YBlock extends Block {
+final class HBlock extends Block{
 
     /**
      * Byte array represents "S" block.
      * In game will be displayed as (between lines):
      *  -------------------
-     *      # #
-     *       #
-     *       #
+     *       # #
+     *       ###
+     *       # #
      *  -------------------
      */
     private static final byte[][] IMAGE = {
             {1, 0, 1},
-            {0, 1, 0},
-            {0, 1, 0}
+            {1, 1, 1},
+            {1, 0, 1}
     };
-
-    public YBlock() {
+    public HBlock(){
         super(IMAGE);
     }
 }
+

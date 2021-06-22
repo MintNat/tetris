@@ -4,7 +4,7 @@ import java.io.PrintStream;
 
 public class Printer {
 
-    final PrintStream out;
+    private final PrintStream out;
 
     public Printer(PrintStream out) {
         this.out = out;

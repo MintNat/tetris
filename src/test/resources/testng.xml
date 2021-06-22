@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
-
 <suite name="TestNG Group Test">
     <test verbose="2" name="Blocks tests">
         <groups>
@@ -12,7 +11,7 @@
             </run>
         </groups>
         <classes>
-            <class name="com.epam.prejap.tetris.block.BlocksShapesTest"/>
+            <class name="com.epam.prejap.tetris.block.BlockShapeTest"/>
         </classes>
     </test>
     <test verbose="2" name="Functions tests">
@@ -33,6 +32,18 @@
         </groups>
         <classes>
             <class name="com.epam.prejap.tetris.JARArchiveIT"/>
+        </classes>
+    </test>
+    <test name="Test playfield and human player">
+        <groups>
+            <run>
+                <include name="Playfield"/>
+                <include name="HumanPlayer"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="com.epam.prejap.tetris.game.TestPlayfield"/>
+            <class name="com.epam.prejap.tetris.player.TestHumanPlayer"/>
         </classes>
     </test>
 </suite>

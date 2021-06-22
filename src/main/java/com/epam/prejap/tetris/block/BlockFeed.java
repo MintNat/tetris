@@ -8,10 +8,13 @@ public class BlockFeed {
 
     private final Random rnd = new Random();
     private final List<Supplier<Block>> blocks = List.of(
+            HBlock::new,
+            IBlock::new,
             OBlock::new,
             TBlock::new,
             YBlock::new,
-            IBlock::new
+            IBlock::new,
+            SBlock::new
     );
 
     public BlockFeed() {

@@ -8,6 +8,14 @@ package com.epam.prejap.tetris.block;
  */
 final class TBlock extends Block {
 
+    /**
+     * Byte array represents "Y" block.
+     * In game will be displayed as (between lines):
+     *  -------------------
+     *      ###
+     *       #
+     *  -------------------
+     */
     private static final byte[][] IMAGE = {
             {1,1,1},
             {0,1,0}

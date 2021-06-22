@@ -75,3 +75,9 @@ NOT HERE, NOT IN YOUR LOCAL REPOSITORY.
 1. Every successfully merged PR is worth 10 points.
 1. Every new, passing and meaningful test is worth 1 point.
 1. Every added and meaningful Javadoc is worth 1 point.
+
+
+## License
+Project is distributed under GNU Lesser General Public license.
+Current GNU-licensed dependency is JNativeHook.
+License may be changed in a future by any valid reason.

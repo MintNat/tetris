@@ -3,6 +3,7 @@ package com.epam.prejap.tetris.game;
 import com.epam.prejap.tetris.block.Block;
 import com.epam.prejap.tetris.block.BlockFeed;
 
+
 public class Playfield {
 
     private final Grid grid1;
@@ -33,11 +34,12 @@ public class Playfield {
     public boolean move(Move move) {
         hide();
         boolean moved;
-            switch (move) {
-                case LEFT -> moveLeft();
-                case RIGHT -> moveRight();
-            }
-            moved = moveDown();
+        switch (move) {
+            case LEFT -> moveLeft();
+            case RIGHT -> moveRight();
+            case TO_BOTTOM_NOW -> moveToBottom();
+        }
+        moved = moveDown();
         show();
         return moved;
     }
@@ -60,6 +62,7 @@ public class Playfield {
         }
     }
 
+<<<<<<< HEAD
     */
 /**
      * Allocates filled line in a grid.
@@ -98,6 +101,18 @@ public class Playfield {
         Arrays.fill(grid[0], (byte)0);
     }
 */
+
+    /**
+     * Move immediately to bottom
+     * @see Playfield#isValidMove(Block, int, int)
+     */
+    private boolean moveToBottom() {
+        int i = 1;
+        while (isValidMove(block, i, 0)) {
+            i++;
+        }
+        return move(i - 1, 0);
+    }
 
     /**
      * Moves a current block right by 1 column.
