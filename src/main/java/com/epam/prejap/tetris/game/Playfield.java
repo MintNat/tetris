@@ -3,11 +3,9 @@ package com.epam.prejap.tetris.game;
 import com.epam.prejap.tetris.block.Block;
 import com.epam.prejap.tetris.block.BlockFeed;
 
-import java.util.Arrays;
-
 public class Playfield {
 
-    private final byte[][] grid;
+    private final Grid grid1;
     private final int rows;
     private final int cols;
     private final Printer printer;
@@ -22,7 +20,7 @@ public class Playfield {
         this.cols = cols;
         this.feed = feed;
         this.printer = printer;
-        grid = new byte[this.rows][this.cols];
+        grid1 = new Grid(this.rows, this.cols);
     }
 
     public void nextBlock() {
@@ -43,12 +41,18 @@ public class Playfield {
         show();
         return moved;
     }
+/*
 
-    /**
-     * Checks for complete lines in a grid and removes them when found.
-     * Lines that are above it will be moved down on such number of rows however many lines were found.
-     */
+    */
+/**
+     * Looks for the complete lines in a grid and removes them when such was found.
+     * Lines that are above it, will be moved down on such number of rows however many filled lines were found.
+     *//*
+
     public void findAndRemoveFilledLines() {
+        do {
+            removeFilledLine();
+        } while (grid1.hasFilledLines());
         int numberOfFilledLine = hasCompleteLine();
         while (numberOfFilledLine >= 0) {
             removeLine(numberOfFilledLine);
@@ -56,11 +60,13 @@ public class Playfield {
         }
     }
 
-    /**
+    */
+/**
      * Allocates filled line in a grid.
      *
      * @return number of line that is filled or -1 if none was found
-     */
+     *//*
+
     private int hasCompleteLine() {
         int line = 0;
         for (byte[] bytes : grid) {
@@ -77,18 +83,21 @@ public class Playfield {
         return -1;
     }
 
-    /**
+    */
+/**
      * Removes a line with a given number.
      * Lines that are above it will be moved down one position.
      *
      * @param numberOfLine the index of line, which should be removed
-     */
+     *//*
+
     private void removeLine(int numberOfLine) {
         for (int i = numberOfLine; i > 0; i--) {
             grid[i] = Arrays.copyOf(grid[i-1], cols);
         }
         Arrays.fill(grid[0], (byte)0);
     }
+*/
 
     /**
      * Moves a current block right by 1 column.
@@ -145,7 +154,7 @@ public class Playfield {
                 if (dot > 0) {
                     int newRow = row + i + rowOffset;
                     int newCol = col + j + colOffset;
-                    if (newRow >= rows || newCol >= cols || grid[newRow][newCol] > 0) {
+                    if (newRow >= rows || newCol >= cols || grid1.checkDotPresenceAtPosition(newRow, newCol)) {
                         return false;
                     }
                 }
@@ -158,15 +167,15 @@ public class Playfield {
      * Hides a current block.
      */
     private void hide() {
-        forEachBrick((i, j, dot) -> grid[row + i][col + j] = 0);
+        forEachBrick((i, j, dot) -> grid1.replaceValue(row + i, col + j, Byte.valueOf("0")));
     }
 
     /**
      * Shows block and draws grid.
      */
     private void show() {
-        forEachBrick((i, j, dot) -> grid[row + i][col + j] = dot);
-        printer.draw(grid);
+        forEachBrick((i, j, dot) -> grid1.replaceValue(row + i, col + j, dot));
+        printer.draw(grid1);
     }
 
     /**

@@ -10,6 +10,17 @@ public class Printer {
         this.out = out;
     }
 
+    void draw(Grid grid) {
+        clear();
+        border(grid.columnsNumber);
+        for (Grid.Row line : grid.lines) {
+            startRow();
+            line.row.forEach(this::print);
+            endRow();
+        }
+        border(grid.columnsNumber);
+    }
+
     void draw(byte[][] grid) {
         clear();
         border(grid[0].length);
@@ -28,6 +39,10 @@ public class Printer {
     }
 
     void print(byte dot) {
+        out.format(dot == 0 ? " " :"#");
+    }
+
+    void print(Byte dot) {
         out.format(dot == 0 ? " " :"#");
     }
 
