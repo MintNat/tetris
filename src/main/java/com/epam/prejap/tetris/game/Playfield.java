@@ -6,7 +6,7 @@ import com.epam.prejap.tetris.block.BlockFeed;
 
 public class Playfield {
 
-    private final Grid grid1;
+    private final Grid grid;
     private final int rows;
     private final int cols;
     private final Printer printer;
@@ -21,7 +21,7 @@ public class Playfield {
         this.cols = cols;
         this.feed = feed;
         this.printer = printer;
-        grid1 = new Grid(this.rows, this.cols);
+        grid = new Grid(this.rows, this.cols);
     }
 
     public void nextBlock() {
@@ -62,7 +62,6 @@ public class Playfield {
         }
     }
 
-<<<<<<< HEAD
     */
 /**
      * Allocates filled line in a grid.
@@ -169,7 +168,7 @@ public class Playfield {
                 if (dot > 0) {
                     int newRow = row + i + rowOffset;
                     int newCol = col + j + colOffset;
-                    if (newRow >= rows || newCol >= cols || grid1.checkDotPresenceAtPosition(newRow, newCol)) {
+                    if (newRow >= rows || newCol >= cols || grid.checkDotPresenceAtPosition(newRow, newCol)) {
                         return false;
                     }
                 }
@@ -182,15 +181,15 @@ public class Playfield {
      * Hides a current block.
      */
     private void hide() {
-        forEachBrick((i, j, dot) -> grid1.replaceValue(row + i, col + j, Byte.valueOf("0")));
+        forEachBrick((i, j, dot) -> grid.replaceValue(row + i, col + j, Byte.valueOf("0")));
     }
 
     /**
      * Shows block and draws grid.
      */
     private void show() {
-        forEachBrick((i, j, dot) -> grid1.replaceValue(row + i, col + j, dot));
-        printer.draw(grid1);
+        forEachBrick((i, j, dot) -> grid.replaceValue(row + i, col + j, dot));
+        printer.draw(grid);
     }
 
     /**
