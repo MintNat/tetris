@@ -43,63 +43,14 @@ public class Playfield {
         show();
         return moved;
     }
-/*
 
-    */
-/**
-     * Looks for the complete lines in a grid and removes them when such was found.
+    /**
+     * Searches and removes the complete lines from a grid if such was found.
      * Lines that are above it, will be moved down on such number of rows however many filled lines were found.
-     *//*
-
+     */
     public void findAndRemoveFilledLines() {
-        do {
-            removeFilledLine();
-        } while (grid1.hasFilledLines());
-        int numberOfFilledLine = hasCompleteLine();
-        while (numberOfFilledLine >= 0) {
-            removeLine(numberOfFilledLine);
-            numberOfFilledLine = hasCompleteLine();
-        }
+        if (grid.hasFilledLines()) grid.removeFilledLine();
     }
-
-    */
-/**
-     * Allocates filled line in a grid.
-     *
-     * @return number of line that is filled or -1 if none was found
-     *//*
-
-    private int hasCompleteLine() {
-        int line = 0;
-        for (byte[] bytes : grid) {
-            boolean lineIsFilled = true;
-            for (byte aByte : bytes) {
-                if (aByte == 0) {
-                    lineIsFilled = false;
-                    break;
-                }
-            }
-            if (lineIsFilled) return line;
-            line++;
-        }
-        return -1;
-    }
-
-    */
-/**
-     * Removes a line with a given number.
-     * Lines that are above it will be moved down one position.
-     *
-     * @param numberOfLine the index of line, which should be removed
-     *//*
-
-    private void removeLine(int numberOfLine) {
-        for (int i = numberOfLine; i > 0; i--) {
-            grid[i] = Arrays.copyOf(grid[i-1], cols);
-        }
-        Arrays.fill(grid[0], (byte)0);
-    }
-*/
 
     /**
      * Move immediately to bottom
@@ -181,7 +132,7 @@ public class Playfield {
      * Hides a current block.
      */
     private void hide() {
-        forEachBrick((i, j, dot) -> grid.replaceValue(row + i, col + j, Byte.valueOf("0")));
+        forEachBrick((i, j, dot) -> grid.replaceValue(row + i, col + j, 0));
     }
 
     /**
@@ -215,7 +166,7 @@ public class Playfield {
     }
 
     private interface BrickAction {
-        void act(int i, int j, byte dot);
+        void act(int i, int j, int dot);
     }
 
 }

@@ -15,34 +15,17 @@ public class Printer {
         border(grid.columnsNumber);
         for (Grid.Row line : grid.lines) {
             startRow();
-            line.row.forEach(this::print);
+            line.getRow().forEach(this::print);
             endRow();
         }
         border(grid.columnsNumber);
-    }
-
-    void draw(byte[][] grid) {
-        clear();
-        border(grid[0].length);
-        for (byte[] bytes : grid) {
-            startRow();
-            for (byte aByte : bytes) {
-                print(aByte);
-            }
-            endRow();
-        }
-        border(grid[0].length);
     }
 
     void clear() {
         out.print("\u001b[2J\u001b[H");
     }
 
-    void print(byte dot) {
-        out.format(dot == 0 ? " " :"#");
-    }
-
-    void print(Byte dot) {
+    void print(int dot) {
         out.format(dot == 0 ? " " :"#");
     }
 

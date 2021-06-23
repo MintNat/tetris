@@ -1,15 +1,16 @@
 package com.epam.prejap.tetris.game;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static java.util.Arrays.asList;
 
 /**
- * Grid for the Playfield class.
+ * Grid for the Playfield class usage.
  * Grid's matrix is represented here as a List of rows.
  * Introduces nested class Row.
+ *
+ * @author Miatowicz Natalia
  */
 class Grid {
     List<Row> lines;
@@ -41,7 +42,7 @@ class Grid {
      * @param column   column number
      * @param newValue new value to be stored at the specified position
      */
-    void replaceValue(int row, int column, Byte newValue) {
+    void replaceValue(int row, int column, Integer newValue) {
         lines.get(row).replace(column, newValue);
     }
 
@@ -50,20 +51,31 @@ class Grid {
      *
      * @return true if there are at least one filled line
      */
-    public boolean hasFilledLines() {
+    boolean hasFilledLines() {
         return lines.stream().map(Row::isFilled).reduce(false, (a, b) -> a || b);
     }
 
+    /**
+     * Removes filled rows.
+     * Appends new rows, filled with 0, at the beginning of the List lines such number of rows, as many lines were removed
+     */
+     void removeFilledLine() {
+        var filledLines = lines.stream().filter(Row::isFilled).collect(Collectors.toList());
+        lines.removeAll(filledLines);
+        for (int i = 0; i < filledLines.size(); i++) {
+            lines.add(i, new Row(columnsNumber));
+        }
+    }
 
     /**
-     * Represents line of a grid.
+     * Represents one line of the grid.
      */
-    class Row {
-        List<Byte> row;
+    static class Row {
+        private final List<Integer> row;
 
-        public Row(int columns) {
-            Byte[] line = new Byte[columns];
-            Arrays.fill(line, Byte.valueOf("0"));
+        Row(int columns) {
+            Integer[] line = new Integer[columns];
+            Arrays.fill(line, 0);
             this.row = asList(line);
         }
 
@@ -73,7 +85,7 @@ class Grid {
          * @param position index of the element to replace
          * @param newValue new value to be stored at the specified position
          */
-        public void replace(int position, Byte newValue) {
+        void replace(int position, Integer newValue) {
             row.set(position, newValue);
         }
 
@@ -82,8 +94,27 @@ class Grid {
          *
          * @return true if the row doesn't contain 0 ay any position
          */
-        public boolean isFilled() {
-            return !row.contains(Byte.valueOf("0"));
+        boolean isFilled() {
+            return row.stream().noneMatch(number -> (number == null || number == 0));
+        }
+
+        public List<Integer> getRow() {
+            return Collections.unmodifiableList(row);
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            Row row1 = (Row) o;
+
+            return Objects.equals(row, row1.row);
+        }
+
+        @Override
+        public int hashCode() {
+            return row != null ? row.hashCode() : 0;
         }
     }
 }
