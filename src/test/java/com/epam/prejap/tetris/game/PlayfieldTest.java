@@ -49,18 +49,6 @@ public class PlayfieldTest {
         Assert.assertEquals(gridField.get(playfield), expectedGrid, "Expected one filled line (row number: 9) to be removed, lines from above moved down");
     }
 
-    private Field getAccessToRowField() throws ReflectiveOperationException {
-        Field rowField = Grid.Row.class.getDeclaredField("row");
-        rowField.setAccessible(true);
-        return rowField;
-    }
-
-    private Field getAccessToGridField() throws ReflectiveOperationException {
-        Field gridField = Playfield.class.getDeclaredField("grid");
-        gridField.setAccessible(true);
-        return gridField;
-    }
-
     public void noLinesRemovedFromPlayfieldGrid() throws ReflectiveOperationException {
         Field gridField = getAccessToGridField();
         Field rowField = getAccessToRowField();
@@ -79,5 +67,17 @@ public class PlayfieldTest {
         playfield.findAndRemoveFilledLines();
 
         Assert.assertEquals(gridField.get(playfield), expectedGrid, "Expected one filled line (row number: 9) to be removed, lines from above moved down");
+    }
+
+    private Field getAccessToRowField() throws ReflectiveOperationException {
+        Field rowField = Grid.Row.class.getDeclaredField("row");
+        rowField.setAccessible(true);
+        return rowField;
+    }
+
+    private Field getAccessToGridField() throws ReflectiveOperationException {
+        Field gridField = Playfield.class.getDeclaredField("grid");
+        gridField.setAccessible(true);
+        return gridField;
     }
 }
