@@ -21,7 +21,17 @@ class Grid {
         this.rowsNumber = rows;
         this.columnsNumber = columns;
         this.lines = new ArrayList<>(this.rowsNumber);
-        for (int i = 0; i < this.rowsNumber; i++) lines.add(i, new Row(this.columnsNumber));
+        for (int i = 0; i < rowsNumber; i++) addNewLineFilledWithZeros(i);
+    }
+
+    /**
+     * Inserts new row in the grid at the specified position.
+     * This line will be filled with 0
+     *
+     * @param numberOfLine index of a line at which new row should be inserted
+     */
+    private void addNewLineFilledWithZeros(int numberOfLine) {
+        lines.add(numberOfLine, new Row(columnsNumber));
     }
 
     /**
@@ -63,8 +73,28 @@ class Grid {
         var filledLines = lines.stream().filter(Row::isFilled).collect(Collectors.toList());
         lines.removeAll(filledLines);
         for (int i = 0; i < filledLines.size(); i++) {
-            lines.add(i, new Row(columnsNumber));
+            addNewLineFilledWithZeros(i);
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Grid grid = (Grid) o;
+
+        if (rowsNumber != grid.rowsNumber) return false;
+        if (columnsNumber != grid.columnsNumber) return false;
+        return lines != null ? lines.equals(grid.lines) : grid.lines == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = lines != null ? lines.hashCode() : 0;
+        result = 31 * result + rowsNumber;
+        result = 31 * result + columnsNumber;
+        return result;
     }
 
     /**
