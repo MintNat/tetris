@@ -10,26 +10,26 @@ import static org.testng.Assert.assertEquals;
 
 /**
  * "Generic" test class, to test shapes.
- * Define block class and its expected image in {@link BlockShapeData} class
+ * Define block class and its expected image in {@link BlocksShapesData} class
  * and it will be tested automatically
  *
  * @author Nikita Pochapynskyi
  */
 @Test(groups = "blockShapes")
-public class BlockShapeTest {
+public class BlocksShapesTest {
 
     private final Block block;
     private final byte[][] image;
 
-    @Factory(dataProviderClass = BlockShapeData.class, dataProvider = "blocks")
-    public BlockShapeTest(Block block, byte[][] image) {
+    @Factory(dataProviderClass = BlocksShapesData.class, dataProvider = "blocks")
+    public BlocksShapesTest(Block block, byte[][] image) {
         this.block = block;
         this.image = image;
     }
 
     @DataProvider
     public Iterator<Object[]> dotAtData() {
-        return BlockShapeData.getDotAtDataFor(block.getClass());
+        return BlocksShapesData.getDotAtDataFor(block.getClass());
     }
 
     public void shouldBeRightQtOfRows() {

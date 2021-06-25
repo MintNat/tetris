@@ -11,20 +11,31 @@ import java.util.function.Supplier;
  *
  * @author Nikita Pochapynskyi
  */
-public class BlockShapeData {
+public class BlocksShapesData {
 
     /**
      * Contains block's constructor reference and its expected image for each block to be tested.
      * Feel free to add more shapes here (through static init block). They will be tested automatically.
      */
     private static final Map<Supplier<Block>, byte[][]> blocks = new LinkedHashMap<>() {{
-        put(SBlock::new, new byte[][]{
-                {0, 1, 1},
-                {1, 1, 0}
+        put(HBlock::new, new byte[][]{
+                {1, 0, 1},
+                {1, 1, 1},
+                {1, 0, 1}
+        });
+        put(IBlock::new, new byte[][]{
+                {1},
+                {1},
+                {1},
+                {1}
         });
         put(OBlock::new, new byte[][]{
                 {1, 1},
                 {1, 1}
+        });
+        put(SBlock::new, new byte[][]{
+                {0, 1, 1},
+                {1, 1, 0}
         });
         put(TBlock::new, new byte[][]{
                 {1, 1, 1},
@@ -34,17 +45,6 @@ public class BlockShapeData {
                 {1, 0, 1},
                 {0, 1, 0},
                 {0, 1, 0}
-        });
-        put(IBlock::new, new byte[][]{
-                {1},
-                {1},
-                {1},
-                {1}
-        });
-        put(HBlock::new, new byte[][]{
-                {1, 0, 1},
-                {1, 1, 1},
-                {1, 0, 1}
         });
     }};
 

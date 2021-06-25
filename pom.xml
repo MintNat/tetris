@@ -22,10 +22,10 @@
             Example: maven-jar-plugin -> maven.jar.plugin.version
             Order of appearance: alphabetical
         -->
-        <properties.maven.plugin.version>1.0.0</properties.maven.plugin.version>
         <jnativehook.version>2.0.2</jnativehook.version>
-        <testng.version>7.4.0</testng.version>
         <maven.assembly.plugin.version>3.3.0</maven.assembly.plugin.version>
+        <properties.maven.plugin.version>1.0.0</properties.maven.plugin.version>
+        <testng.version>7.4.0</testng.version>
     </properties>
 
     <dependencies>
