@@ -6,15 +6,15 @@ import org.testng.annotations.Test;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
+import java.util.List;
 
-import static com.epam.prejap.tetris.game.GridData.getAccessToRowField;
-import static com.epam.prejap.tetris.game.GridData.rows;
-import static com.epam.prejap.tetris.game.GridData.cols;
+import static com.epam.prejap.tetris.game.GridData.*;
 import static java.util.Arrays.asList;
 
 /**
  * Tests for the Grid class, its inner class Row.
- * In case if the field "row" is not present in Row class, FailListener will mark skipped tests as failed
+ * In case if the field "row" is not present in the Row class or the field "lines" in the Grid class,
+ * FailListener will mark skipped tests as failed
  *
  * @author Miatowicz Natalia
  */
@@ -22,17 +22,22 @@ import static java.util.Arrays.asList;
 @Listeners(FailListener.class)
 public class GridTest {
     public void methodHasFilledLinesReturnsTrueWhenCompleteRowPresent() throws ReflectiveOperationException {
-        Field row = getAccessToRowField();
+        Field row = getAccessToRowFieldInRowClass();
+        Field lines = getAccessToLinesFieldInGrid();
         Grid gridWithFilledRow = new Grid(rows, cols);
+        Grid.Row filledRow = new Grid.Row(cols);
         Integer[] tmpLine = new Integer[cols];
         Arrays.fill(tmpLine, 1);
-        row.set(gridWithFilledRow.lines.get(2), asList(tmpLine));
+        row.set(filledRow, asList(tmpLine));
+        List<Grid.Row> linesTmp = generateNewListRowsFilledWithZeros();
+        linesTmp.set(2, filledRow);
+        lines.set(gridWithFilledRow, linesTmp);
 
         Assert.assertTrue(gridWithFilledRow.hasFilledLines(), "Should return true, when the complete line present");
     }
 
     public void methodIsFilledReturnsTrueIfRowIsComplete() throws ReflectiveOperationException {
-        Field row = getAccessToRowField();
+        Field row = getAccessToRowFieldInRowClass();
         Grid.Row filledRow = new Grid.Row(cols);
         Integer[] tmpLine = new Integer[cols];
         Arrays.fill(tmpLine, 1);
@@ -47,14 +52,16 @@ public class GridTest {
     }
 
     @Test(dataProvider = "gridWithFilledLines", dataProviderClass = GridData.class)
-    public void removesCompleteLinesFromGrid(Grid grid, Grid expectedGrid, String msg) {
+    public void removesCompleteLinesFromGrid(Grid grid, Grid expectedGrid, String msg) throws ReflectiveOperationException {
+        Field lines = getAccessToLinesFieldInGrid();
         grid.removeFilledLine();
-        Assert.assertEquals(grid.lines, expectedGrid.lines, msg);
+        Assert.assertEquals(lines.get(grid), lines.get(expectedGrid), msg);
     }
 
     @Test(dataProvider = "gridWithNotFullyFilledLines", dataProviderClass = GridData.class)
-    public void noCompleteLinesToRemoveGrid(Grid grid, Grid expectedGrid) {
+    public void noCompleteLinesToRemoveGrid(Grid grid, Grid expectedGrid) throws ReflectiveOperationException {
+        Field lines = getAccessToLinesFieldInGrid();
         grid.removeFilledLine();
-        Assert.assertEquals(grid.lines, expectedGrid.lines, "No lines should be removed");
+        Assert.assertEquals(lines.get(grid), lines.get(expectedGrid), "No lines should be removed");
     }
 }

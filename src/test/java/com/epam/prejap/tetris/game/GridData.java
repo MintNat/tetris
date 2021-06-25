@@ -3,6 +3,7 @@ package com.epam.prejap.tetris.game;
 import org.testng.annotations.DataProvider;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.IntStream;
@@ -13,15 +14,28 @@ public class GridData {
     static int rows = 10;
     static int cols = 20;
 
-    static Field getAccessToRowField() throws ReflectiveOperationException {
+    static Field getAccessToLinesFieldInGrid() throws ReflectiveOperationException {
+        Field lines = Grid.class.getDeclaredField("lines");
+        lines.setAccessible(true);
+        return lines;
+    }
+
+    static Field getAccessToRowFieldInRowClass() throws ReflectiveOperationException {
         Field row = Grid.Row.class.getDeclaredField("row");
         row.setAccessible(true);
         return row;
     }
 
+    static List<Grid.Row> generateNewListRowsFilledWithZeros() {
+        List<Grid.Row> linesTmp = new ArrayList<>();
+        for (int i = 0; i < rows; i++) linesTmp.add(i, new Grid.Row(cols));
+        return linesTmp;
+    }
+
+
     @DataProvider
     public static Object[][] rowIsFilled() throws ReflectiveOperationException {
-        Field row = getAccessToRowField();
+        Field row = getAccessToRowFieldInRowClass();
         Grid.Row notFilledRow1 = new Grid.Row(cols);
         row.set(notFilledRow1, List.of(0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1));
         Grid.Row notFilledRow2 = new Grid.Row(cols);
@@ -35,7 +49,8 @@ public class GridData {
 
     @DataProvider
     public static Object[][] gridWithFilledLines() throws ReflectiveOperationException {
-        Field row = getAccessToRowField();
+        Field row = getAccessToRowFieldInRowClass();
+        Field lines = getAccessToLinesFieldInGrid();
         Grid.Row notFilledRow1 = new Grid.Row(cols);
         row.set(notFilledRow1, List.of(0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1));
         Grid.Row notFilledRow2 = new Grid.Row(cols);
@@ -46,54 +61,74 @@ public class GridData {
         row.set(filledRow, asList(tmpLine));
 
         Grid grid1 = new Grid(rows, cols);
-        grid1.lines.set(7, notFilledRow1);
-        grid1.lines.set(8, notFilledRow2);
-        grid1.lines.set(9, filledRow);
+        List<Grid.Row> linesTmp = generateNewListRowsFilledWithZeros();
+        linesTmp.set(7, notFilledRow1);
+        linesTmp.set(8, notFilledRow2);
+        linesTmp.set(9, filledRow);
+        lines.set(grid1, linesTmp);
         Grid expectedGrid1 = new Grid(rows, cols);
-        expectedGrid1.lines.set(8, notFilledRow1);
-        expectedGrid1.lines.set(9, notFilledRow2);
+        linesTmp = generateNewListRowsFilledWithZeros();
+        linesTmp.set(8, notFilledRow1);
+        linesTmp.set(9, notFilledRow2);
+        lines.set(expectedGrid1, linesTmp);
 
         Grid grid2 = new Grid(rows, cols);
-        grid2.lines.set(5, notFilledRow1);
-        grid2.lines.set(6, filledRow);
-        grid2.lines.set(7, notFilledRow2);
-        grid2.lines.set(8, notFilledRow1);
-        grid2.lines.set(9, filledRow);
+        linesTmp = generateNewListRowsFilledWithZeros();
+        linesTmp.set(5, notFilledRow1);
+        linesTmp.set(6, filledRow);
+        linesTmp.set(7, notFilledRow2);
+        linesTmp.set(8, notFilledRow1);
+        linesTmp.set(9, filledRow);
+        lines.set(grid2, linesTmp);
         Grid expectedGrid2 = new Grid(rows, cols);
-        expectedGrid2.lines.set(7, notFilledRow1);
-        expectedGrid2.lines.set(8, notFilledRow2);
-        expectedGrid2.lines.set(9, notFilledRow1);
+        linesTmp = generateNewListRowsFilledWithZeros();
+        linesTmp.set(7, notFilledRow1);
+        linesTmp.set(8, notFilledRow2);
+        linesTmp.set(9, notFilledRow1);
+        lines.set(expectedGrid2, linesTmp);
 
         Grid grid3 = new Grid(rows, cols);
-        grid3.lines.set(3, notFilledRow2);
-        grid3.lines.set(4, notFilledRow1);
-        grid3.lines.set(5, filledRow);
-        grid3.lines.set(6, notFilledRow2);
-        grid3.lines.set(7, filledRow);
-        grid3.lines.set(8, notFilledRow1);
-        grid3.lines.set(9, filledRow);
+        linesTmp = generateNewListRowsFilledWithZeros();
+        linesTmp.set(3, notFilledRow2);
+        linesTmp.set(4, notFilledRow1);
+        linesTmp.set(5, filledRow);
+        linesTmp.set(6, notFilledRow2);
+        linesTmp.set(7, filledRow);
+        linesTmp.set(8, notFilledRow1);
+        linesTmp.set(9, filledRow);
+        lines.set(grid3, linesTmp);
         Grid expectedGrid3 = new Grid(rows, cols);
-        expectedGrid3.lines.set(6, notFilledRow2);
-        expectedGrid3.lines.set(7, notFilledRow1);
-        expectedGrid3.lines.set(8, notFilledRow2);
-        expectedGrid3.lines.set(9, notFilledRow1);
+        linesTmp = generateNewListRowsFilledWithZeros();
+        linesTmp.set(6, notFilledRow2);
+        linesTmp.set(7, notFilledRow1);
+        linesTmp.set(8, notFilledRow2);
+        linesTmp.set(9, notFilledRow1);
+        lines.set(expectedGrid3, linesTmp);
 
         Grid grid4 = new Grid(rows, cols);
-        grid4.lines.set(9, filledRow);
+        linesTmp = generateNewListRowsFilledWithZeros();
+        linesTmp.set(9, filledRow);
+        lines.set(grid4, linesTmp);
         Grid expectedGrid4 = new Grid(rows, cols);
 
         Grid grid5 = new Grid(rows, cols);
-        grid5.lines.set(0, filledRow);
+        linesTmp = generateNewListRowsFilledWithZeros();
+        linesTmp.set(0, filledRow);
+        lines.set(grid5, linesTmp);
         Grid expectedGrid5 = new Grid(rows, cols);
 
         Grid grid6 = new Grid(rows, cols);
-        grid6.lines.set(6, notFilledRow1);
-        grid6.lines.set(7, notFilledRow2);
-        grid6.lines.set(8, filledRow);
-        grid6.lines.set(9, filledRow);
+        linesTmp = generateNewListRowsFilledWithZeros();
+        linesTmp.set(6, notFilledRow1);
+        linesTmp.set(7, notFilledRow2);
+        linesTmp.set(8, filledRow);
+        linesTmp.set(9, filledRow);
+        lines.set(grid6, linesTmp);
         Grid expectedGrid6 = new Grid(rows, cols);
-        expectedGrid6.lines.set(8, notFilledRow1);
-        expectedGrid6.lines.set(9, notFilledRow2);
+        linesTmp = generateNewListRowsFilledWithZeros();
+        linesTmp.set(8, notFilledRow1);
+        linesTmp.set(9, notFilledRow2);
+        lines.set(expectedGrid6, linesTmp);
 
         return new Object[][]{
                 {grid1, expectedGrid1, "Expected one filled line (row number: 9) to be removed, lines above moved down"},
@@ -107,7 +142,8 @@ public class GridData {
 
     @DataProvider
     public static Object[][] gridWithNotFullyFilledLines() throws ReflectiveOperationException {
-        Field row = getAccessToRowField();
+        Field row = getAccessToRowFieldInRowClass();
+        Field lines = getAccessToLinesFieldInGrid();
         Grid.Row notFilledRow = new Grid.Row(cols);
         row.set(notFilledRow, List.of(0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1));
 
@@ -115,16 +151,24 @@ public class GridData {
         Grid expectedGrid1 = new Grid(rows, cols);
 
         Grid grid2 = new Grid(rows, cols);
-        grid2.lines.set(8, notFilledRow);
-        grid2.lines.set(9, notFilledRow);
+        List<Grid.Row> linesTmp = generateNewListRowsFilledWithZeros();
+        linesTmp.set(8, notFilledRow);
+        linesTmp.set(9, notFilledRow);
+        lines.set(grid2, linesTmp);
         Grid expectedGrid2 = new Grid(rows, cols);
-        expectedGrid2.lines.set(8, notFilledRow);
-        expectedGrid2.lines.set(9, notFilledRow);
+        linesTmp = generateNewListRowsFilledWithZeros();
+        linesTmp.set(8, notFilledRow);
+        linesTmp.set(9, notFilledRow);
+        lines.set(expectedGrid2, linesTmp);
 
         Grid grid3 = new Grid(rows, cols);
-        IntStream.rangeClosed(0, 9).forEach(i -> grid3.lines.set(i, notFilledRow));
+        List<Grid.Row> grid3Tmp = generateNewListRowsFilledWithZeros();
+        IntStream.rangeClosed(0, 9).forEach(i -> grid3Tmp.set(i, notFilledRow));
+        lines.set(grid3, grid3Tmp);
         Grid expectedGrid3 = new Grid(rows, cols);
-        IntStream.rangeClosed(0, 9).forEach(i -> expectedGrid3.lines.set(i, notFilledRow));
+        List<Grid.Row> expectedGrid3Tmp = generateNewListRowsFilledWithZeros();
+        IntStream.rangeClosed(0, 9).forEach(i -> expectedGrid3Tmp.set(i, notFilledRow));
+        lines.set(expectedGrid3, expectedGrid3Tmp);
 
         return new Object[][]{
                 {grid1, expectedGrid1},

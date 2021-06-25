@@ -13,7 +13,7 @@ import static java.util.Arrays.asList;
  * @author Miatowicz Natalia
  */
 class Grid {
-    List<Row> lines;
+    private final List<Row> lines;
     final int rowsNumber;
     final int columnsNumber;
 
@@ -22,6 +22,15 @@ class Grid {
         this.columnsNumber = columns;
         this.lines = new ArrayList<>(this.rowsNumber);
         for (int i = 0; i < rowsNumber; i++) addNewLineFilledWithZeros(i);
+    }
+
+    /**
+     * Returns a List of rows contained in this grid.
+     *
+     * @return unmodifiable list of rows
+     */
+    List<Row> getLines() {
+        return Collections.unmodifiableList(lines);
     }
 
     /**
@@ -120,14 +129,19 @@ class Grid {
         }
 
         /**
-         * Checks if this row contains a filled line.
+         * Checks if this row contains a filled line (doesn't contain 0 or null at any position).
          *
-         * @return true if the row doesn't contain 0 ay any position
+         * @return true if the row doesn't contain 0 or null at any position
          */
         boolean isFilled() {
             return row.stream().noneMatch(number -> (number == null || number == 0));
         }
 
+        /**
+         * Returns a List of values in this row
+         *
+         * @return unmodifiable list of values
+         */
         public List<Integer> getRow() {
             return Collections.unmodifiableList(row);
         }

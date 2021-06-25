@@ -13,7 +13,7 @@ public class Printer {
     void draw(Grid grid) {
         clear();
         border(grid.columnsNumber);
-        for (Grid.Row line : grid.lines) {
+        for (Grid.Row line : grid.getLines()) {
             startRow();
             line.getRow().forEach(this::print);
             endRow();
